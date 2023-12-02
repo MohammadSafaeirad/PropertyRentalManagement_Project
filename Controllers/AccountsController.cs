@@ -22,19 +22,34 @@ namespace FinalProject_PropertyManagement.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(UserModel model)
+        public ActionResult Login(UserModel user)
         {
             using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
             {
-                bool isValidUser = context.Users.Any(user => user.Username.ToLower() ==
-                model.Username.ToLower() && user.Password == model.Password);
-                if (isValidUser)
+                // Fetch the user from the database based on username and password
+                var result = context.Users.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
+
+                if (result != null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.Username, false);
-                    return RedirectToAction("Index", "Home");
+                    // Check if UserType is not null
+                    if (result.UserType.HasValue)
+                    {
+                        // Store UserType in session
+                        Session["UserType"] = result.UserType.Value.ToString();
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        // UserType is null, handle the case accordingly
+                        ModelState.AddModelError(String.Empty, "UserType is null.");
+                        return View();
+                    }
                 }
-                ModelState.AddModelError(String.Empty, "Invalid username or password !");
-                return View();
+                else
+                {
+                    // User not found, redirect to Signup
+                    return RedirectToAction("Signup", "Accounts");
+                }
             }
         }
 
@@ -55,7 +70,8 @@ namespace FinalProject_PropertyManagement.Controllers
 
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
+            Session["UserType"] = null;
+            //FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
     }
