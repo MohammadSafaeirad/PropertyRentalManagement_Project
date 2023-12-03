@@ -48,7 +48,8 @@ namespace FinalProject_PropertyManagement.Controllers
                 else
                 {
                     // User not found, redirect to Signup
-                    return RedirectToAction("Signup", "Accounts");
+                    ModelState.AddModelError("", "Invalid username or password !");
+                    return View();
                 }
             }
         }
