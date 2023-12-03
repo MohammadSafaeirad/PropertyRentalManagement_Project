@@ -17,6 +17,17 @@ namespace FinalProject_PropertyManagement.Controllers
         // GET: PropertyOwners
         public ActionResult Index()
         {
+            try
+            {
+                if (Session["UserType"] == null || string.Equals(Session["UserType"]?.ToString(), "3", StringComparison.OrdinalIgnoreCase) || string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             var propertyOwners = db.PropertyOwners.Include(p => p.Building).Include(p => p.User);
             return View(propertyOwners.ToList());
         }

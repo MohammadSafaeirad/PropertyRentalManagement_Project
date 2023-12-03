@@ -17,6 +17,17 @@ namespace FinalProject_PropertyManagement.Controllers
         // GET: Apartments
         public ActionResult Index()
         {
+            try
+            {
+                if (Session["UserType"] == null)
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             var apartments = db.Apartments.Include(a => a.Building).Include(a => a.Status);
             return View(apartments.ToList());
         }

@@ -17,6 +17,17 @@ namespace FinalProject_PropertyManagement.Controllers
         // GET: Status
         public ActionResult Index()
         {
+            try
+            {
+                if (Session["UserType"] == null || string.Equals(Session["UserType"]?.ToString(), "3", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             return View(db.Statuses.ToList());
         }
 

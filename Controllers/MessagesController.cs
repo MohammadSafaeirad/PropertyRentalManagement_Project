@@ -17,6 +17,17 @@ namespace FinalProject_PropertyManagement.Controllers
         // GET: Messages
         public ActionResult Index()
         {
+            try
+            {
+                if (Session["UserType"] == null)
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             var messages = db.Messages.Include(m => m.PropertyManager).Include(m => m.Tenant);
             return View(messages.ToList());
         }

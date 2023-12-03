@@ -17,6 +17,17 @@ namespace FinalProject_PropertyManagement.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
+            try
+            {
+                if (Session["UserType"] == null)
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             var appointments = db.Appointments.Include(a => a.PropertyManager).Include(a => a.Tenant);
             return View(appointments.ToList());
         }

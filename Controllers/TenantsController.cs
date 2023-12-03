@@ -17,6 +17,17 @@ namespace FinalProject_PropertyManagement.Controllers
         // GET: Tenants
         public ActionResult Index()
         {
+            try
+            {
+                if (Session["UserType"] == null || string.Equals(Session["UserType"]?.ToString(), "3", StringComparison.OrdinalIgnoreCase) || string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Login", "Accounts");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
             var tenants = db.Tenants.Include(t => t.User);
             return View(tenants.ToList());
         }
