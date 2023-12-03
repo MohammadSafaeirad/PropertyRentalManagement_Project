@@ -15,7 +15,7 @@ namespace FinalProject_PropertyManagement.Controllers
         private PropertyRentalManagementEntities db = new PropertyRentalManagementEntities();
 
         // GET: Buildings
-        public ActionResult Index()
+        public ActionResult Index(string searchBy, string search)
         {
             try
             {
@@ -28,6 +28,26 @@ namespace FinalProject_PropertyManagement.Controllers
             {
                 return RedirectToAction("Login", "Accounts");
             }
+            if (!String.IsNullOrEmpty(search))
+            {
+                if (searchBy == "Address")
+                {
+                    return View(db.Buildings.Where(x => x.Address.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "City")
+                {
+                    return View(db.Buildings.Where(x => x.City.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "State")
+                {
+                    return View(db.Buildings.Where(x => x.State.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "ZipCode")
+                {
+                    return View(db.Buildings.Where(x => x.ZipCode.Contains(search) || search == null).ToList());
+                }
+            }
+            
             return View(db.Buildings.ToList());
         }
 

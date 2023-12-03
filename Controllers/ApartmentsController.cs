@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using FinalProject_PropertyManagement.Models;
 
 namespace FinalProject_PropertyManagement.Controllers
@@ -15,7 +16,7 @@ namespace FinalProject_PropertyManagement.Controllers
         private PropertyRentalManagementEntities db = new PropertyRentalManagementEntities();
 
         // GET: Apartments
-        public ActionResult Index()
+        public ActionResult Index(string searchBy, string search)
         {
             try
             {
@@ -28,6 +29,26 @@ namespace FinalProject_PropertyManagement.Controllers
             {
                 return RedirectToAction("Login", "Accounts");
             }
+            int searchValue;
+            bool isSearchInt = int.TryParse(search, out searchValue);
+
+            if (searchBy == "NumberOfRooms")
+            {
+                return View(db.Apartments.Where(x => x.NumberOfRooms.ToString() == search || search == null).ToList());
+            }
+            if (searchBy == "Status")
+            {
+                return View(db.Apartments.Where(x => x.Status.Description == search || search == null).ToList());
+            }
+            if (searchBy == "Area")
+            {
+                return View(db.Apartments.Where(x => x.Area >= searchValue || search == null).ToList());
+            }
+            if (searchBy == "Rent")
+            {
+                return View(db.Apartments.Where(x => x.Rent >= searchValue || search == null).ToList());
+            }
+
             var apartments = db.Apartments.Include(a => a.Building).Include(a => a.Status);
             return View(apartments.ToList());
         }
