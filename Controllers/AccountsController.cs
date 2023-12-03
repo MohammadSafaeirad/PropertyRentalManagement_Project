@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -26,41 +28,62 @@ namespace FinalProject_PropertyManagement.Controllers
         {
             using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
             {
-                // Fetch the user from the database based on username and password
-                var result = context.Users.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
+                // Fetch the user from the database based on username
+                var result = context.Users.FirstOrDefault(x => x.Username == user.Username);
 
                 if (result != null)
                 {
-                    // Check if UserType is not null
-                    if (result.UserType.HasValue)
+                    if (result != null)
                     {
-                        // Store UserType in session
-                        Session["UserType"] = result.UserType.Value.ToString();
-                        return RedirectToAction("Index", "Home");
+                        // Hash the entered password for comparison
+                        string hashedPassword = HashPassword(user.Password, result.Username);
+
+                        // Compare the hashed password with the stored hashed password
+                        if (result.Password == hashedPassword)
+                        {
+                            // Check if UserType is not null
+                            if (result.UserType.HasValue)
+                            {
+                                // Store UserType in session
+                                Session["UserType"] = result.UserType.Value.ToString();
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else
+                            {
+                                // UserType is null, handle the case accordingly
+                                ModelState.AddModelError(String.Empty, "UserType is null.");
+                                return View();
+                            }
+                        }
                     }
-                    else
-                    {
-                        // UserType is null, handle the case accordingly
-                        ModelState.AddModelError(String.Empty, "UserType is null.");
-                        return View();
-                    }
+                    
                 }
-                else
-                {
-                    // User not found, redirect to Signup
-                    ModelState.AddModelError("", "Invalid username or password !");
-                    return View();
-                }
+
+                // User not found or password doesn't match, redirect to Login with an error
+                ModelState.AddModelError("", "Invalid username or password!");
+                return View();
             }
         }
+
 
         public ActionResult Signup()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult Signup(User user)
+        public ActionResult Signup(User user, string confirmPassword)
         {
+            user.UserType = 3;
+             
+            if (user.Password != confirmPassword)
+            {
+                ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+                return View(user);
+            }
+
+            // Hash the password before saving to the database using the username as a salt
+            user.Password = HashPassword(user.Password, user.Username);
+
             using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
             {
                 context.Users.Add(user);
@@ -74,6 +97,18 @@ namespace FinalProject_PropertyManagement.Controllers
             Session["UserType"] = null;
             //FormsAuthentication.SignOut();
             return RedirectToAction("Login");
+        }
+
+        // Helper method to hash a password with a pepper
+        private string HashPassword(string password, string username)
+        {
+            // Replace "YourPepper" with a secret key specific to your application
+            string pepper = "ThisIsRandomPapper";
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password + username + pepper));
+                return Convert.ToBase64String(hashedBytes);
+            }
         }
     }
 }
