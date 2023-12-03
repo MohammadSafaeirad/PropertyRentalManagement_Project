@@ -10,116 +10,112 @@ using FinalProject_PropertyManagement.Models;
 
 namespace FinalProject_PropertyManagement.Controllers
 {
-    public class ApartmentsController : Controller
+    public class TenantsController : Controller
     {
         private PropertyRentalManagementEntities db = new PropertyRentalManagementEntities();
 
-        // GET: Apartments
+        // GET: Tenants
         public ActionResult Index()
         {
-            var apartments = db.Apartments.Include(a => a.Building).Include(a => a.Status);
-            return View(apartments.ToList());
+            var tenants = db.Tenants.Include(t => t.User);
+            return View(tenants.ToList());
         }
 
-        // GET: Apartments/Details/5
+        // GET: Tenants/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Apartment apartment = db.Apartments.Find(id);
-            if (apartment == null)
+            Tenant tenant = db.Tenants.Find(id);
+            if (tenant == null)
             {
                 return HttpNotFound();
             }
-            return View(apartment);
+            return View(tenant);
         }
 
-        // GET: Apartments/Create
+        // GET: Tenants/Create
         public ActionResult Create()
         {
-            ViewBag.BuildingID = new SelectList(db.Buildings, "BuildingID", "Address");
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Description");
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username");
             return View();
         }
 
-        // POST: Apartments/Create
+        // POST: Tenants/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ApartmentID,BuildingID,StatusID,UnitNumber,Area,NumberOfRooms,Rent")] Apartment apartment)
+        public ActionResult Create([Bind(Include = "TenantID,UserID")] Tenant tenant)
         {
             if (ModelState.IsValid)
             {
-                db.Apartments.Add(apartment);
+                db.Tenants.Add(tenant);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BuildingID = new SelectList(db.Buildings, "BuildingID", "Address", apartment.BuildingID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Description", apartment.StatusID);
-            return View(apartment);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", tenant.UserID);
+            return View(tenant);
         }
 
-        // GET: Apartments/Edit/5
+        // GET: Tenants/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Apartment apartment = db.Apartments.Find(id);
-            if (apartment == null)
+            Tenant tenant = db.Tenants.Find(id);
+            if (tenant == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BuildingID = new SelectList(db.Buildings, "BuildingID", "Address", apartment.BuildingID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Description", apartment.StatusID);
-            return View(apartment);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", tenant.UserID);
+            return View(tenant);
         }
 
-        // POST: Apartments/Edit/5
+        // POST: Tenants/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ApartmentID,BuildingID,StatusID,UnitNumber,Area,NumberOfRooms,Rent")] Apartment apartment)
+        public ActionResult Edit([Bind(Include = "TenantID,UserID")] Tenant tenant)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(apartment).State = EntityState.Modified;
+                db.Entry(tenant).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BuildingID = new SelectList(db.Buildings, "BuildingID", "Address", apartment.BuildingID);
-            ViewBag.StatusID = new SelectList(db.Statuses, "StatusID", "Description", apartment.StatusID);
-            return View(apartment);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", tenant.UserID);
+            return View(tenant);
         }
 
-        // GET: Apartments/Delete/5
+        // GET: Tenants/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Apartment apartment = db.Apartments.Find(id);
-            if (apartment == null)
+            Tenant tenant = db.Tenants.Find(id);
+            if (tenant == null)
             {
                 return HttpNotFound();
             }
-            return View(apartment);
+            return View(tenant);
         }
 
-        // POST: Apartments/Delete/5
+        // POST: Tenants/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Apartment apartment = db.Apartments.Find(id);
-            db.Apartments.Remove(apartment);
+            Tenant tenant = db.Tenants.Find(id);
+            db.Tenants.Remove(tenant);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

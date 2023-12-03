@@ -18,14 +18,44 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    
+
 
                     @if (string.Equals(Session["UserType"]?.ToString(), "3", StringComparison.OrdinalIgnoreCase))
                     {
                         <li>@Html.ActionLink("Appartments", "Index", "Apartments", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Building", "Index", "Buildings", new { area = "" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("Message", "Index", "Messages", new { area = "" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("Appointment", "Index", "Appointments", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        <li>@Html.ActionLink("Logout", "Logout", "Accounts", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    @if (string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li>@Html.ActionLink("Building", "Index", "Buildings", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Appartments", "Index", "Apartments", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Status", "Index", "Status", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Appointment", "Index", "Appointments", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Message", "Index", "Messages", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Report", "Index", "Reports", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        <li>@Html.ActionLink("Logout", "Logout", "Accounts", new { area = "" }, new { @class = "nav-link" })</li>
+
+                    }
+                    @if (string.Equals(Session["UserType"]?.ToString(), "1", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li>@Html.ActionLink("Property Owner", "Index", "PropertyOwners", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Property Manager", "Index", "PropertyManagers", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Tenant", "Index", "Tenants", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("User", "Index", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("User Type", "Index", "UserTypes", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        <li>@Html.ActionLink("Building", "Index", "Buildings", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Appartments", "Index", "Apartments", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Status", "Index", "Status", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Appointment", "Index", "Appointments", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Message", "Index", "Messages", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Report", "Index", "Reports", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        <li>@Html.ActionLink("Logout", "Logout", "Accounts", new { area = "" }, new { @class = "nav-link" })</li>
                     }
 
                 </ul>
