@@ -15,7 +15,7 @@ namespace FinalProject_PropertyManagement.Controllers
         private PropertyRentalManagementEntities db = new PropertyRentalManagementEntities();
 
         // GET: Tenants
-        public ActionResult Index()
+        public ActionResult Index(string searchBy, string search)
         {
             try
             {
@@ -27,6 +27,27 @@ namespace FinalProject_PropertyManagement.Controllers
             catch
             {
                 return RedirectToAction("Login", "Accounts");
+            }
+            if (!String.IsNullOrEmpty(search))
+            {
+                int searchValue;
+                bool isSearchInt = int.TryParse(search, out searchValue);
+                if (searchBy == "UserID")
+                {
+                    return View(db.Tenants.Where(x => x.UserID == searchValue || search == null).ToList());
+                }
+                if (searchBy == "UserName")
+                {
+                    return View(db.Tenants.Where(x => x.User.Username.Contains(search) || search == null).ToList());
+                }              
+                if (searchBy == "UserFirstName")
+                {
+                    return View(db.Tenants.Where(x => x.User.FirstName.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "UserLastName")
+                {
+                    return View(db.Tenants.Where(x => x.User.LastName.Contains(search) || search == null).ToList());
+                }
             }
             var tenants = db.Tenants.Include(t => t.User);
             return View(tenants.ToList());

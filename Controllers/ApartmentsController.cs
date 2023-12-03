@@ -29,24 +29,28 @@ namespace FinalProject_PropertyManagement.Controllers
             {
                 return RedirectToAction("Login", "Accounts");
             }
-            int searchValue;
-            bool isSearchInt = int.TryParse(search, out searchValue);
 
-            if (searchBy == "NumberOfRooms")
+            if (!String.IsNullOrEmpty(search))
             {
-                return View(db.Apartments.Where(x => x.NumberOfRooms.ToString() == search || search == null).ToList());
-            }
-            if (searchBy == "Status")
-            {
-                return View(db.Apartments.Where(x => x.Status.Description == search || search == null).ToList());
-            }
-            if (searchBy == "Area")
-            {
-                return View(db.Apartments.Where(x => x.Area >= searchValue || search == null).ToList());
-            }
-            if (searchBy == "Rent")
-            {
-                return View(db.Apartments.Where(x => x.Rent >= searchValue || search == null).ToList());
+                int searchValue;
+                bool isSearchInt = int.TryParse(search, out searchValue);
+
+                if (searchBy == "NumberOfRooms")
+                {
+                    return View(db.Apartments.Where(x => x.NumberOfRooms.ToString() == search || search == null).ToList());
+                }
+                if (searchBy == "Status")
+                {
+                    return View(db.Apartments.Where(x => x.Status.Description == search || search == null).ToList());
+                }
+                if (searchBy == "Area")
+                {
+                    return View(db.Apartments.Where(x => x.Area >= searchValue || search == null).ToList());
+                }
+                if (searchBy == "Rent")
+                {
+                    return View(db.Apartments.Where(x => x.Rent >= searchValue || search == null).ToList());
+                }
             }
 
             var apartments = db.Apartments.Include(a => a.Building).Include(a => a.Status);

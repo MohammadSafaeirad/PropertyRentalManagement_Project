@@ -15,7 +15,7 @@ namespace FinalProject_PropertyManagement.Controllers
         private PropertyRentalManagementEntities db = new PropertyRentalManagementEntities();
 
         // GET: PropertyManagers
-        public ActionResult Index()
+        public ActionResult Index(string searchBy, string search)
         {
             try
             {
@@ -27,6 +27,35 @@ namespace FinalProject_PropertyManagement.Controllers
             catch
             {
                 return RedirectToAction("Login", "Accounts");
+            }
+            if (!String.IsNullOrEmpty(search))
+            {
+                int searchValue;
+                bool isSearchInt = int.TryParse(search, out searchValue);
+                if (searchBy == "BuildingID")
+                {
+                    return View(db.PropertyManagers.Where(x => x.BuildingID == searchValue || search == null).ToList());
+                }
+                if (searchBy == "BuildingAddress")
+                {
+                    return View(db.PropertyManagers.Where(x => x.Building.Address.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "UserID")
+                {
+                    return View(db.PropertyManagers.Where(x => x.UserID == searchValue || search == null).ToList());
+                }
+                if (searchBy == "UserName")
+                {
+                    return View(db.PropertyManagers.Where(x => x.User.Username.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "UserFirstName")
+                {
+                    return View(db.PropertyManagers.Where(x => x.User.FirstName.Contains(search) || search == null).ToList());
+                }
+                if (searchBy == "UserLastName")
+                {
+                    return View(db.PropertyManagers.Where(x => x.User.LastName.Contains(search) || search == null).ToList());
+                }
             }
             var propertyManagers = db.PropertyManagers.Include(p => p.Building).Include(p => p.User);
             return View(propertyManagers.ToList());

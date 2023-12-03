@@ -9,25 +9,68 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<p>
+    @using (Html.BeginForm("Index", "Tenants", FormMethod.Get))
+    {
+        <b>Search by: </b>
+        @Html.DropDownList("SearchBy", new SelectList(new List<SelectListItem>
+        {
+            new SelectListItem { Text = "User ID", Value = "UserID" },
+            new SelectListItem { Text = "Username", Value = "UserName" },
+            new SelectListItem { Text = "User First name", Value = "UserFirstName" },
+            new SelectListItem { Text = "User Last name", Value = "UserLastName" },
+        }, "Value", "Text"), new { @class = "form-control" })
+
+        @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
+        <input type="submit" value="Search" class="btn btn-success" />
+    }
+</p>
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.User.UserID)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.User.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.LastName)
         </th>
         <th></th>
     </tr>
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="3" class="text-danger fw-bold">No data found</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.User.UserID)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.User.Username)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.User.FirstName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.User.LastName)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.TenantID }) |
+        @Html.ActionLink("Details", "Details", new { id = item.TenantID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.TenantID })
+    </td>
+</tr>
+        }
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Username)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TenantID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TenantID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TenantID })
-        </td>
-    </tr>
-}
-
-</table>
+    </table>
