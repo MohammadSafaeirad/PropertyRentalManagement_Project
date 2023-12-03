@@ -26,7 +26,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.AppointmentDate)
+            @String.Format("{0:d}", item.AppointmentDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)

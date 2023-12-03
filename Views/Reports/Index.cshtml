@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.ReportBody)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateSent)
+            @String.Format("{0:d}", item.DateSent)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)

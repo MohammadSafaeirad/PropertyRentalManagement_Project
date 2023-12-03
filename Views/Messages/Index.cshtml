@@ -35,7 +35,7 @@
             @Html.DisplayFor(modelItem => item.MessageBody)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateSent)
+            @String.Format("{0:d}", item.DateSent)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Sender)

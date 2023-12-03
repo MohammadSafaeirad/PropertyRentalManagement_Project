@@ -4,12 +4,31 @@
     ViewBag.Title = "Create";
 }
 
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Include jQuery UI -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd',  // Adjust the date format as needed
+            defaultDate: new Date(),  // Set the default date to the current date
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:+0',  // Allow selection of the last 100 years to the current year
+        });
+    });
+</script>
+
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Report</h4>
         <hr />
@@ -41,7 +60,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateSent, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateSent, new { htmlAttributes = new { @class = "form-control" } })
+                <input type="date" id="DateSent" name="DateSent" class="form-control" />
                 @Html.ValidationMessageFor(model => model.DateSent, "", new { @class = "text-danger" })
             </div>
         </div>
