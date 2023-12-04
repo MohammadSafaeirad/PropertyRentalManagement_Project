@@ -1,6 +1,7 @@
 ﻿using FinalProject_PropertyManagement.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -73,22 +74,40 @@ namespace FinalProject_PropertyManagement.Controllers
         [HttpPost]
         public ActionResult Signup(User user, string confirmPassword)
         {
-            user.UserType = 3;
-             
-            if (user.Password != confirmPassword)
+            try
             {
-                ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
-                return View(user);
+                using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
+                {
+                    user.UserType = 3;
+
+                    if (user.Password != confirmPassword)
+                    {
+                        ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+                        return View(user);
+                    }
+
+                    // Hash the password before saving to the database using the username as a salt
+                    user.Password = HashPassword(user.Password, user.Username);
+
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    }
+                }
+
+                // Handle or log the exception as needed                
+                throw;
             }
 
-            // Hash the password before saving to the database using the username as a salt
-            user.Password = HashPassword(user.Password, user.Username);
-
-            using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
-            {
-                context.Users.Add(user);
-                context.SaveChanges();
-            }
+            
             return RedirectToAction("Login");
         }
 
