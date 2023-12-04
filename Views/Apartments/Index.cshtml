@@ -63,31 +63,34 @@
     {
         foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnitNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Area)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfRooms)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Building.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status.Description)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ApartmentID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ApartmentID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ApartmentID })
-                </td>
-            </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.UnitNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Area)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.NumberOfRooms)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Rent)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Building.Address)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status.Description)
+    </td>
+    @if (string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase) || string.Equals(Session["UserType"]?.ToString(), "1", StringComparison.OrdinalIgnoreCase))
+    {
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ApartmentID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ApartmentID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ApartmentID })
+        </td>
+    }
+    </tr>
         }
     }
 
