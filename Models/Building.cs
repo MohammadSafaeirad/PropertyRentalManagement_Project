@@ -11,6 +11,7 @@ namespace FinalProject_PropertyManagement.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Building
     {
@@ -23,9 +24,22 @@ namespace FinalProject_PropertyManagement.Models
         }
     
         public int BuildingID { get; set; }
+
+        [Required]
+        [MaxLength(70)]
         public string Address { get; set; }
+
+        [Required]
+        [MaxLength(30)]
         public string City { get; set; }
+
+        [Required]
+        [MaxLength(5, ErrorMessage ="Please use the short format of the states. For example: QC for Quebec")]
         public string State { get; set; }
+
+        [Required]
+        [MaxLength(6)]
+        [RegularExpression("[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ][0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]", ErrorMessage = "Please enter a valid canadian Zip code. For example: H2X1C4")]
         public string ZipCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

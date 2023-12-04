@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinalProject_PropertyManagement.Models
 {
     public class UserModel
     {
         private int id;
+        [Required]
         private string username;
+        [Required]
         private string password;
         private int usertype;
 

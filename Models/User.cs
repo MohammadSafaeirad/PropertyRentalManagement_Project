@@ -11,7 +11,7 @@ namespace FinalProject_PropertyManagement.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,12 +21,28 @@ namespace FinalProject_PropertyManagement.Models
             this.PropertyOwners = new HashSet<PropertyOwner>();
             this.Tenants = new HashSet<Tenant>();
         }
-    
+
+        
         public int UserID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string Username { get; set; }
+
+        [Required]
         public string Password { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string LastName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [RegularExpression("^\\S+@\\S+\\.\\S+$", ErrorMessage ="This is not a valid Email")]
         public string Email { get; set; }
         public Nullable<int> UserType { get; set; }
     

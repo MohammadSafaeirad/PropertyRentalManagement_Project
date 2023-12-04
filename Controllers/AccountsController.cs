@@ -74,38 +74,46 @@ namespace FinalProject_PropertyManagement.Controllers
         [HttpPost]
         public ActionResult Signup(User user, string confirmPassword)
         {
-            try
+            if (ModelState.IsValid)
             {
-                using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
+                try
                 {
-                    user.UserType = 3;
-
-                    if (user.Password != confirmPassword)
+                    using (PropertyRentalManagementEntities context = new PropertyRentalManagementEntities())
                     {
-                        ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
-                        return View(user);
-                    }
+                        user.UserType = 3;
 
-                    // Hash the password before saving to the database using the username as a salt
-                    user.Password = HashPassword(user.Password, user.Username);
+                        if (user.Password != confirmPassword)
+                        {
+                            ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+                            return View(user);
+                        }
 
-                    context.Users.Add(user);
-                    context.SaveChanges();
-                }
-            }
-            catch (DbEntityValidationException ex)
-            {
-                foreach (var validationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                        // Hash the password before saving to the database using the username as a salt
+                        user.Password = HashPassword(user.Password, user.Username);
+
+                        context.Users.Add(user);
+                        context.SaveChanges();
                     }
                 }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var validationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                        }
+                    }
 
-                // Handle or log the exception as needed                
-                throw;
+                    // Handle or log the exception as needed                
+                    throw;
+                }
             }
+            else
+            {
+                return View("Signup");
+            }
+            
 
             
             return RedirectToAction("Login");

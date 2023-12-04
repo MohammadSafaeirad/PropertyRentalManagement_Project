@@ -11,12 +11,16 @@ namespace FinalProject_PropertyManagement.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Report
     {
         public int ReportID { get; set; }
         public Nullable<int> OwnerID { get; set; }
         public Nullable<int> ManagerID { get; set; }
+
+        [Required]
+        [MaxLength(200)]
         public string ReportBody { get; set; }
         public Nullable<System.DateTime> DateSent { get; set; }
     

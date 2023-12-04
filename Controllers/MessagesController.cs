@@ -64,6 +64,17 @@ namespace FinalProject_PropertyManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (string.Equals(Session["UserType"]?.ToString(), "3", StringComparison.OrdinalIgnoreCase))
+                {
+                    var tenant = db.Tenants.Find(message.TenantID);
+                    message.Sender = tenant.User.Email;
+                }
+                if (string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase))
+                {
+                    var propertyManager = db.PropertyManagers.Find(message.ManagerID);
+                    message.Sender = propertyManager.User.Email;
+                    
+                }
                 db.Messages.Add(message);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -71,6 +82,9 @@ namespace FinalProject_PropertyManagement.Controllers
 
             ViewBag.ManagerID = new SelectList(db.PropertyManagers, "ManagerID", "ManagerID", message.ManagerID);
             ViewBag.TenantID = new SelectList(db.Tenants, "TenantID", "TenantID", message.TenantID);
+            
+            
+
             return View(message);
         }
 

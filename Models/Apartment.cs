@@ -11,15 +11,28 @@ namespace FinalProject_PropertyManagement.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     
     public partial class Apartment
     {
         public int ApartmentID { get; set; }
         public Nullable<int> BuildingID { get; set; }
         public Nullable<int> StatusID { get; set; }
+
+        [Required]
         public Nullable<int> UnitNumber { get; set; }
+
+        [Required]
+        [Range(20, 400)]
         public Nullable<double> Area { get; set; }
+
+        [Required]
+        [Range(0, 5)]
         public Nullable<int> NumberOfRooms { get; set; }
+
+        [Required]
+        [Range(400, 80000)]
         public Nullable<double> Rent { get; set; }
     
         public virtual Building Building { get; set; }
