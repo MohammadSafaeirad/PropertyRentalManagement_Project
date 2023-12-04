@@ -6,9 +6,13 @@
 
 <h2>Index</h2>
 
+@if (string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase) || string.Equals(Session["UserType"]?.ToString(), "1", StringComparison.OrdinalIgnoreCase))
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
+
 <p>
     @using (Html.BeginForm("Index", "Apartments", FormMethod.Get))
     {
