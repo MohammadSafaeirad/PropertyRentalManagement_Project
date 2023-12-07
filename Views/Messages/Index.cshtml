@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    string currentUserEmail = Session["UserEmail"]?.ToString();
 }
 
 <h2>Index</h2>
@@ -28,30 +29,91 @@
         </th>
         <th></th>
     </tr>
+    @if (string.Equals(Session["UserType"]?.ToString(), "3", StringComparison.OrdinalIgnoreCase))
+    {
+        foreach (var item in Model.Where(m => m.Sender == currentUserEmail || m.Tenant.User.Email == currentUserEmail))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageBody)
+                </td>
+                <td>
+                    @String.Format("{0:d}", item.DateSent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tenant.TenantID)
+                </td>
+                <td>
+                    @Html.ActionLink("Reply", "Edit", new { id = item.MessageID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.MessageID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
+                </td>
+            </tr>
+        }
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.MessageBody)
-        </td>
-        <td>
-            @String.Format("{0:d}", item.DateSent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tenant.TenantID)
-        </td>
-        <td>
-            @Html.ActionLink("Reply", "Edit", new { id=item.MessageID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MessageID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MessageID })
-        </td>
-    </tr>
-}
+    @if (string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase))
+    {
+        foreach (var item in Model.Where(m => m.Sender == currentUserEmail || m.PropertyManager.User.Email == currentUserEmail))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageBody)
+                </td>
+                <td>
+                    @String.Format("{0:d}", item.DateSent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tenant.TenantID)
+                </td>
+                <td>
+                    @Html.ActionLink("Reply", "Edit", new { id = item.MessageID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.MessageID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
+                </td>
+            </tr>
+        }
+    }
+
+    @if (string.Equals(Session["UserType"]?.ToString(), "1", StringComparison.OrdinalIgnoreCase))
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageBody)
+                </td>
+                <td>
+                    @String.Format("{0:d}", item.DateSent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tenant.TenantID)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.MessageID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.MessageID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
+                </td>
+            </tr>
+        }
+    }
 
 </table>

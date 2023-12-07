@@ -47,6 +47,8 @@ namespace FinalProject_PropertyManagement.Controllers
                             {
                                 // Store UserType in session
                                 Session["UserType"] = result.UserType.Value.ToString();
+                                Session["UserEmail"] = result.Email.ToString();
+                                
                                 return RedirectToAction("Index", "Home");
                             }
                             else

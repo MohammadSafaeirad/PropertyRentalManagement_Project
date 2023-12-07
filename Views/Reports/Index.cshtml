@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    string currentUserEmail = Session["UserEmail"]?.ToString();
 }
 
 <h2>Index</h2>
@@ -25,27 +26,60 @@
         </th>
         <th></th>
     </tr>
+    @if (string.Equals(Session["UserType"]?.ToString(), "2", StringComparison.OrdinalIgnoreCase))
+    {
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReportBody)
-        </td>
-        <td>
-            @String.Format("{0:d}", item.DateSent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PropertyOwner.OwnerID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ReportID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ReportID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ReportID })
-        </td>
-    </tr>
-}
+
+        foreach (var item in Model.Where(m => m.PropertyManager.User.Email == currentUserEmail))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReportBody)
+                </td>
+                <td>
+                    @String.Format("{0:d}", item.DateSent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyOwner.OwnerID)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ReportID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ReportID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ReportID })
+                </td>
+            </tr>
+        }
+    }
+
+    @if (string.Equals(Session["UserType"]?.ToString(), "1", StringComparison.OrdinalIgnoreCase))
+    {
+
+
+        foreach (var item in Model.Where(m => m.PropertyOwner.User.Email == currentUserEmail))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReportBody)
+                </td>
+                <td>
+                    @String.Format("{0:d}", item.DateSent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyManager.ManagerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyOwner.OwnerID)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ReportID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ReportID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ReportID })
+                </td>
+            </tr>
+        }
+    }
 
 </table>
