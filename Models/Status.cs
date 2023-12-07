@@ -12,7 +12,7 @@ namespace FinalProject_PropertyManagement.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Status
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +22,6 @@ namespace FinalProject_PropertyManagement.Models
         }
     
         public int StatusID { get; set; }
-
         [Required]
         [MaxLength(20)]
         public string Description { get; set; }

@@ -18,7 +18,6 @@ namespace FinalProject_PropertyManagement.Models
         public int ReportID { get; set; }
         public Nullable<int> OwnerID { get; set; }
         public Nullable<int> ManagerID { get; set; }
-
         [Required]
         [MaxLength(200)]
         public string ReportBody { get; set; }

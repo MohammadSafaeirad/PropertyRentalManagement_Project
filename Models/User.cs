@@ -21,28 +21,20 @@ namespace FinalProject_PropertyManagement.Models
             this.PropertyOwners = new HashSet<PropertyOwner>();
             this.Tenants = new HashSet<Tenant>();
         }
-
-        
+    
         public int UserID { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string Username { get; set; }
-
         [Required]
         public string Password { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string FirstName { get; set; }
-
-        [Required]
-        [MaxLength(50)]
         public string LastName { get; set; }
-
         [Required]
         [MaxLength(50)]
-        [RegularExpression("^\\S+@\\S+\\.\\S+$", ErrorMessage ="This is not a valid Email")]
+        [RegularExpression("^\\S+@\\S+\\.\\S+$", ErrorMessage = "This is not a valid Email")]
         public string Email { get; set; }
         public Nullable<int> UserType { get; set; }
     

@@ -12,13 +12,12 @@ namespace FinalProject_PropertyManagement.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Message
     {
         public int MessageID { get; set; }
         public Nullable<int> ManagerID { get; set; }
         public Nullable<int> TenantID { get; set; }
-
         [Required]
         [MaxLength(200)]
         public string MessageBody { get; set; }
